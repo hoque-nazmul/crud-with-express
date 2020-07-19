@@ -27,7 +27,7 @@ exports.getSingleContact = (req, res) => {
 }
 
 exports.createContact = (req, res) => {
-    const { name, email, phone } = req.body;
+    const { name, email, phone, id } = req.body;
 
     const errors = {}
 
@@ -54,24 +54,55 @@ exports.createContact = (req, res) => {
                 })
             })
     } else {
-        const contact = new Contact({
-            name,
-            email,
-            phone
-        })
-        contact.save()
-            .then(dt => {
-                Contact.find()
-                    .then(data => {
-                        return res.render('index', { data, errors: {} })
-                    })
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(500).json({
-                    error: "Error is Ocurred!"
+        if (id) {
+            Contact.findOneAndUpdate(
+                { _id: id },
+                {
+                    $set: {
+                        name, email, phone
+                    }
+                },
+                { new: true }
+            )
+                .then((dt) => {
+                    Contact.find()
+                        .then(data => {
+                            return res.render('index', { data, errors: {} });
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            return res.status(500).json({
+                                error: "Error is Ocurred!"
+                            })
+                        })
                 })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(500).json({
+                        error: "Error is Ocurred!"
+                    })
+                })
+        } else {
+            const contact = new Contact({
+                name,
+                email,
+                phone
             })
+            contact.save()
+                .then(dt => {
+                    Contact.find()
+                        .then(data => {
+                            return res.render('index', { data, errors: {} })
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(500).json({
+                        error: "Error is Ocurred!"
+                    })
+                })
+        }
+
     }
 }
 

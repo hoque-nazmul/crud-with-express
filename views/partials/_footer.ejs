@@ -9,6 +9,23 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+
+<script>
+    window.onload = function () {
+        const editBtn = document.getElementsByClassName('btn-edit');
+        const form = document.getElementById('contactForm');
+        [...editBtn].forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const { name, email, phone, id } = e.target.dataset;
+                form[0].value = name;
+                form[1].value = email;
+                form[2].value  = phone;
+                form[3].value = id;
+                form[4].value = "Update"
+            });
+        })
+    }
+</script>
 </body>
 
 </html>
