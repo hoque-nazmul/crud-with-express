@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const contactRoute = require('./app/routes/contactRoutes');
 require('dotenv').config()
 
 const app = express();
@@ -11,6 +12,9 @@ app.set('view engine', 'ejs');
 // for hanling request data
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
+
+// Group Route
+app.use('/contact', contactRoute)
 
 // MongoDB Connection String
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.tamdy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
