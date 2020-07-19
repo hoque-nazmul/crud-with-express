@@ -4,6 +4,9 @@ require('dotenv').config()
 
 const app = express();
 
+// Set Template Engine
+app.set('view engine', 'ejs');
+
 // Middleware
 // for hanling request data
 app.use(express.urlencoded({ extended: true }))
