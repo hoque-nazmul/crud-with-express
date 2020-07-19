@@ -1,4 +1,4 @@
-const { Schema } = require('mongoose').Schema;
+const { Schema, model } = require('mongoose');
 
 const contactSchema = new Schema({
     name: {
@@ -22,3 +22,7 @@ const contactSchema = new Schema({
         minlength: 6
     }
 })
+
+const Contact = model("Contact", contactSchema);
+
+module.exports = Contact;
