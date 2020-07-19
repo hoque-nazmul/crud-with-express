@@ -1,12 +1,67 @@
 <%- include('./partials/_header.ejs') %>
 <div class="container">
-    <div class="jumbotron">
-        <h2 class="display-3">
-            Hello World
-        </h2>
-        <p class="lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum, minus perferendis laborum dolorum
-            iure reiciendis saepe voluptate et fuga explicabo illum sapiente ullam natus laudantium dolores porro vel
-            distinctio harum.</p>
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <form action="/contact" method="POST">
+                <div class="row justify-content-between">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control <%= errors.name ? 'is-invalid' : '' %> " name="name"
+                            placeholder="John Doe">
+                        <div class="invalid-feedback">
+                            <%= errors.name %>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="email" class="form-control <%= errors.email ? 'is-invalid' : '' %> " name="email"
+                            placeholder="jhon@example.com">
+                        <div class="invalid-feedback">
+                            <%= errors.email %>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control <%= errors.phone ? 'is-invalid' : '' %> " name="phone"
+                            placeholder="+632785609">
+                        <div class="invalid-feedback">
+                            <%= errors.phone %>
+                        </div>
+                    </div>
+                    <div class="col-md-1 mr-4">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row justify-content-between mt-3">
+        <div class="col-md-10 offset-md-1">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (data) { %>
+                    <% for( dt of data ) { %>
+                    <tr>
+                        <th><%= dt.name %> </th>
+                        <td><%= dt.email %> </td>
+                        <td><%= dt.phone %> </td>
+                        <td>
+                            <button class="btn btn-info">
+                                Edit
+                            </button>
+                            <a href="/contact/delete/<%= dt._id %>" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <%- include('./partials/_footer.ejs') %>

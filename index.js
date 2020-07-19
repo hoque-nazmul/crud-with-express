@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const contactRoute = require('./app/routes/contactRoutes');
+const { getAllContacts } = require('./app/controllers/contactControllers');
 require('dotenv').config()
 
 const app = express();
@@ -22,9 +23,7 @@ const port = process.env.PORT;
 
 
 // Home Router
-app.get('/', (req, res) => {
-    res.render('index')
-});
+app.get('/', getAllContacts);
 
 // Connect with Mongoose
 mongoose.connect(uri, {

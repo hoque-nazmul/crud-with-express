@@ -11,6 +11,6 @@ contactRoute.get('/', getAllContacts)
 contactRoute.get('/:id', getSingleContact)
 contactRoute.post('/', createContact)
 contactRoute.put('/:id', updateContact)
-contactRoute.delete('/:id', deleteContact)
+contactRoute.get('/delete/:id', deleteContact)
 
 module.exports = contactRoute;

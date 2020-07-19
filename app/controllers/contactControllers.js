@@ -3,7 +3,7 @@ const Contact = require('./../models/Contact')
 exports.getAllContacts = (req, res) => {
     Contact.find()
         .then(data => {
-            res.json(data);
+            res.render('index', { data, errors: {} });
         })
         .catch(err => {
             res.status(500).json({
@@ -28,21 +28,51 @@ exports.getSingleContact = (req, res) => {
 
 exports.createContact = (req, res) => {
     const { name, email, phone } = req.body;
-    const contact = new Contact({
-        name,
-        email,
-        phone
-    })
-    contact.save()
-        .then(data => {
-            res.json(data);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: "Error is Ocurred!"
+
+    const errors = {}
+
+    if (!name) {
+        errors.name = "Please, Provide your Name";
+    }
+    if (!email) {
+        errors.email = "Please, Provide your Email";
+    }
+    if (!phone) {
+        errors.phone = "Please, Provide your Phone";
+    }
+    let isError = Object.keys(errors).length > 0;
+
+    if (isError) {
+        Contact.find()
+            .then(data => {
+                return res.render('index', { data, errors });
             })
+            .catch(err => {
+                console.log(err);
+                return res.json({
+                    error: "Error Ocurred!"
+                })
+            })
+    } else {
+        const contact = new Contact({
+            name,
+            email,
+            phone
         })
+        contact.save()
+            .then(dt => {
+                Contact.find()
+                    .then(data => {
+                        return res.render('index', { data, errors: {} })
+                    })
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(500).json({
+                    error: "Error is Ocurred!"
+                })
+            })
+    }
 }
 
 exports.updateContact = (req, res) => {
@@ -70,13 +100,22 @@ exports.updateContact = (req, res) => {
 
 exports.deleteContact = (req, res) => {
     const id = req.params.id;
-    Contact.findOneAndDelete({_id: id})
-        .then(data => {
-            res.json(data);
+    Contact.findOneAndDelete({ _id: id })
+        .then(dt => {
+            Contact.find()
+                .then(data => {
+                    return res.render('index', { data, errors: {} })
+                })
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json({
+            return res.status(500).json({
+                error: "Error is Ocurred!"
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).json({
                 error: "Error is Occured!"
             });
         })
